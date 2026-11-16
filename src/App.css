@@ -214,6 +214,15 @@ table input {
   background: #084298;
 }
 
+.validation-message {
+  margin: -15px 0 25px;
+  padding: 12px 15px;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  background: #fef2f2;
+  color: #991b1b;
+}
+
 .reset-btn {
   background: #e2e8f0;
   color: #334155;
@@ -242,6 +251,11 @@ table input {
   color: #166534;
 
   font-weight: bold;
+}
+
+.result-status.fail {
+  background: #fee2e2;
+  color: #991b1b;
 }
 
 .student-result-info {

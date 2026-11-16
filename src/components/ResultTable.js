@@ -35,8 +35,10 @@ function ResultTable({ subjects, handleMarksChange }) {
                   <td>
                     <input
                       type="number"
+                      aria-label={`${subject.name} MSE marks out of 30`}
                       min="0"
                       max="30"
+                      step="1"
                       value={subject.mse}
                       onChange={(e) =>
                         handleMarksChange(
@@ -51,8 +53,10 @@ function ResultTable({ subjects, handleMarksChange }) {
                   <td>
                     <input
                       type="number"
+                      aria-label={`${subject.name} ESE marks out of 70`}
                       min="0"
                       max="70"
+                      step="1"
                       value={subject.ese}
                       onChange={(e) =>
                         handleMarksChange(

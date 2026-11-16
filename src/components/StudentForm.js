@@ -16,10 +16,11 @@ function StudentForm({
 
         <div className="form-group">
 
-  <label>Student Name</label>
+  <label htmlFor="student-name">Student Name</label>
 
   <input
     type="text"
+    id="student-name"
     name="name"
     placeholder="Example: Sakshi Jannawar"
     value={student.name}
@@ -49,10 +50,11 @@ function StudentForm({
 
         <div className="form-group">
 
-          <label>PRN</label>
+          <label htmlFor="student-prn">PRN</label>
 
           <input
             type="text"
+            id="student-prn"
             name="prn"
             placeholder="Example: 22612345"
             value={student.prn}
@@ -75,7 +77,7 @@ function StudentForm({
           />
 
           <small className="input-help">
-            8 digits: 1/2 + year suffix (00-26) + 5 digits
+            8 digits: 1/2 + current or previous year suffix + 5 digits
           </small>
 
         </div>
@@ -85,10 +87,11 @@ function StudentForm({
 
         <div className="form-group">
 
-          <label>Class</label>
+          <label htmlFor="student-class">Class</label>
 
           <input
             type="text"
+            id="student-class"
             name="className"
             placeholder="Example: TY-CSAI-A"
             value={student.className}

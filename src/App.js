@@ -42,6 +42,7 @@ function App() {
   ]);
 
   const [showResult, setShowResult] = useState(false);
+  const [validationMessage, setValidationMessage] = useState("");
 
   const handleStudentChange = (e) => {
     setStudent({
@@ -50,19 +51,13 @@ function App() {
     });
 
     setShowResult(false);
+    setValidationMessage("");
   };
 
   const handleMarksChange = (id, field, value) => {
 
-    if (field === "mse" && Number(value) > 30) {
-      return;
-    }
-
-    if (field === "ese" && Number(value) > 70) {
-      return;
-    }
-
-    if (Number(value) < 0) {
+    const max = field === "mse" ? 30 : 70;
+    if (value !== "" && (!/^\d+$/.test(value) || Number(value) > max)) {
       return;
     }
 
@@ -78,6 +73,7 @@ function App() {
     );
 
     setShowResult(false);
+    setValidationMessage("");
   };
 
   const validatePRN = (prn) => {
@@ -98,7 +94,7 @@ function App() {
 
   const yearSuffix = parseInt(match[2], 10);
 
-  return yearSuffix >= 0 && yearSuffix <= maxYear;
+  return yearSuffix <= maxYear;
 };
 
 
@@ -119,48 +115,36 @@ const validateName = (name) => {
 };
 
   const calculateResult = () => {
+    const reject = (message) => {
+      setValidationMessage(message);
+      setShowResult(false);
+    };
 
   // Student name validation
   if (!student.name.trim()) {
-    alert("Please enter student name.");
+    reject("Please enter the student's name.");
     return;
   }
 
 
   // PRN validation
   if (!student.prn.trim()) {
-    alert("Please enter PRN.");
+    reject("Please enter the PRN.");
     return;
   }
 
 
   if (!validatePRN(student.prn.trim())) {
 
-    alert(
-      "Invalid PRN.\n\n" +
-      "PRN must contain exactly 8 digits.\n" +
-      "The first digit must be 1 or 2.\n" +
-      "The next two digits must represent a valid year suffix from 00 to 26.\n" +
-      "The final five digits can be any digits."
-    );
+    reject(`Invalid PRN. Use 8 digits: 1 or 2, a year suffix from 00 to ${String(new Date().getFullYear()).slice(-2)}, then 5 digits.`);
 
     return;
   }
 
 
   // Class validation
-  if (!student.name.trim()) {
-  alert("Please enter student name.");
-  return;
-}
-
 if (!validateName(student.name)) {
-  alert(
-    "Invalid Student Name.\n\n" +
-    "Name must contain at least two words.\n" +
-    "Only English letters and spaces are allowed.\n\n" +
-    "Example: Sakshi Jannawar"
-  );
+  reject("Enter at least a first and last name using English letters.");
 
   return;
 }
@@ -168,14 +152,7 @@ if (!validateName(student.name)) {
 
   if (!validateClass(student.className.trim())) {
 
-    alert(
-      "Invalid Class.\n\n" +
-      "Format: YEAR-DEPARTMENT-DIVISION\n\n" +
-      "Example: TY-CSAI-A\n\n" +
-      "Valid years: FY, SY, TY, BT\n" +
-      "Valid departments: CE, IT, CSAI, CSAIML, CSDS, CSAIDS, CSIOT, IC, ME, ENTC\n" +
-      "Valid divisions: A to J"
-    );
+    reject("Enter a class in YEAR-DEPARTMENT-DIVISION format, for example TY-CSAI-A.");
 
     return;
   }
@@ -191,9 +168,7 @@ if (!validateName(student.name)) {
 
   if (incomplete) {
 
-    alert(
-      "Please enter MSE and ESE marks for all subjects."
-    );
+    reject("Enter MSE and ESE marks for every subject before calculating.");
 
     return;
   }
@@ -201,6 +176,7 @@ if (!validateName(student.name)) {
 
   // Show result
   setShowResult(true);
+  setValidationMessage("");
 };
   const resetResult = () => {
 
@@ -238,6 +214,7 @@ if (!validateName(student.name)) {
     ]);
 
     setShowResult(false);
+    setValidationMessage("");
   };
 
   return (
@@ -305,6 +282,10 @@ if (!validateName(student.name)) {
           </button>
 
         </div>
+
+        {validationMessage && (
+          <p className="validation-message" role="alert">{validationMessage}</p>
+        )}
 
         {showResult && (
           <ResultSummary
